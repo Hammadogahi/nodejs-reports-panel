@@ -1,0 +1,171 @@
+<%- include('../layout/header') %>
+<div id="portal">
+  <div class="container mt-5">
+    <div class="row mb-5">
+      <div class="col">
+        <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin/dashboard/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              All Reports
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div id="message" class="alert" role="alert"></div>
+    <div class="row mb-5">
+      <div class="col-md-6"><h5>Reports from User "<%= user.name %>"</h5></div>
+      <div class="col-md-6 d-flex justify-content-end align-items-center"></div>
+    </div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>File</th>
+          <th>Comment</th>
+          <th>Admin Report</th>
+          <th>Admin Comment</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (var i = 0; i < reports.length; i++) { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td>
+            <a
+              href="/download/<%= getFilePath(reports[i].userReport) %>"
+              target="_blank"
+            >
+              <%= getFileName(reports[i].userReport) %></a
+            >
+          </td>
+          <td><%= reports[i].userComment %></td>
+          <td>
+            <% if(reports[i].adminReport) { %>
+            <a
+              href="/download/<%= getFilePath(reports[i].adminReport) %>"
+              target="_blank"
+            >
+              <%= getFileName(reports[i].adminReport) %></a
+            >
+            <% } %>
+          </td>
+          <td>
+            <% if (reports[i].adminComment) {%> <%= reports[i].adminComment %>
+            <% } %>
+          </td>
+
+          <td>
+            <a href="/admin/report/<%= reports[i]._id %>"
+              ><i class="fa-regular fa-eye"></i
+            ></a>
+            <a href="/admin/report/edit/<%= reports[i]._id %>">
+              <i class="fa-regular fa-pen-to-square me-2"></i
+            ></a>
+            <span
+              class="link-danger delete-report"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-report-id="<%= reports[i]._id %>"
+            >
+              <i class="fa-solid fa-trash"></i
+            ></span>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalTitle">Delete Report</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are you sure you want to delete this report?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          id="confirmDelete"
+          class="btn btn-primary btn-danger"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const messageEl = document.getElementById("message");
+    const deleteBtns = document.querySelectorAll(".delete-report");
+    const confirmDeleteButton = document.getElementById("confirmDelete");
+    const message = document.getElementById("message");
+
+    // Get Delete Modal instance to use later
+    deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+    let reportIdToDelete = null;
+
+    // Grab the clicked button id from report-id-delete attribute
+    deleteBtns.forEach((button) => {
+      button.addEventListener("click", function (e) {
+        reportIdToDelete = this.getAttribute("data-report-id");
+      });
+    });
+
+    // Action after clicking Delete Button inside Modal
+    confirmDeleteButton.addEventListener("click", async () => {
+      if (reportIdToDelete) {
+        try {
+          const res = await fetch(`/user/report/delete/${reportIdToDelete}`, {
+            method: "DELETE",
+          });
+          const data = await res.json();
+          if (res.ok) {
+            // Hide the modal
+            deleteModal.hide();
+            messageEl.classList.remove("alert-danger");
+            messageEl.classList.add("alert-success");
+            messageEl.textContent = data.message;
+            // Remove the row from the table
+            const reportRow = document
+              .querySelector(`[data-report-id="${reportIdToDelete}"]`)
+              .closest("tr");
+            reportRow.remove();
+          } else {
+            deleteModal.hide();
+            messageEl.classList.remove("alert-success");
+            messageEl.classList.add("alert-danger");
+            messageEl.textContent = data.error;
+            console.error(data.error);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+  });
+</script>
+<%- include('../layout/footer') %>

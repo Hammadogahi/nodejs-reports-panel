@@ -1,0 +1,66 @@
+<%- include('../layout/header') %>
+<div class="login gray">
+  <div class="container text-center">
+    <div
+      class="login-wrapper row d-flex justify-content-center align-items-center"
+    >
+      <div class="col-4 form-wrapper">
+        <div class="title mb-3">
+          <h1>Add Report</h1>
+        </div>
+        <form
+          id="add"
+          action="/add"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group mb-3">
+            <label for="File">Upload</label>
+            <input
+              type="file"
+              class="form-control"
+              id="file"
+              name="userReport"
+            />
+            <div id="fileAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="comment">Comment</label>
+            <textarea
+              class="form-control"
+              placeholder="Leave a comment here"
+              id="userComment"
+              name="userComment"
+            ></textarea>
+
+            <div id="commentAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Add Report</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const form = document.getElementById("add");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    //get values
+    const formData = new FormData(form);
+    try {
+      const res = await fetch("/add", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.location.assign("/dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>
+<%- include('../layout/footer') %>

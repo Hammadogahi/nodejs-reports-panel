@@ -1,0 +1,83 @@
+<%- include('../layout/header') %>
+<div class="login gray">
+  <div class="container text-center">
+    <div
+      class="login-wrapper row d-flex justify-content-center align-items-center"
+    >
+      <div class="col-4 form-wrapper">
+        <div id="message" class="alert" role="alert"></div>
+
+        <div class="title mb-3">
+          <h1><%= title %></h1>
+        </div>
+        <form
+          id="add"
+          action="/user/report/edit/<%= report._id %>"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group mb-3">
+            <label for="File">Upload</label>
+            <input
+              type="file"
+              class="form-control"
+              id="file"
+              name="userReport"
+            />
+            <div id="fileAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="comment">Comment</label>
+            <textarea
+              class="form-control"
+              placeholder="Leave a comment here"
+              id="userComment"
+              name="userComment"
+            >
+<%= report.userComment %></textarea
+            >
+
+            <div id="commentAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">
+            Edit Report
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const form = document.getElementById("add");
+
+  const messageEl = document.getElementById("message");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    //get values
+    const formData = new FormData(form);
+    try {
+      const res = await fetch("/user/report/edit/<%= report._id %>", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        messageEl.classList.remove("alert-danger");
+        messageEl.classList.add("alert-success");
+        messageEl.textContent = data.message;
+        setTimeout(() => {
+          window.location.assign("/user/report/<%= report._id %>");
+        }, 2000);
+      } else {
+        messageEl.classList.remove("alert-success");
+        messageEl.classList.add("alert-danger");
+        messageEl.textContent = data.error;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>
+<%- include('../layout/footer') %>

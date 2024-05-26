@@ -1,0 +1,57 @@
+<%- include('../layout/header') %>
+
+<div id="singleReport">
+  <div style="max-width: 100%" class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="row mb-5">
+        <div class="col d-flex align-items-center">
+          <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="/admin/dashboard/">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Report</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col d-flex justify-content-end align-items-center">
+          <a class="btn btn-add" href="edit/<%= report._id %>"
+            ><i class="fa-regular fa-pen-to-square me-2"></i> Edit Report</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 report-wrapper p-5">
+        <div class="user-report">
+          <h5 class="mb-3">User Report:</h5>
+          <% if(report) { %>
+          <p class="date"><%= formatDate(report.createdAt) %></p>
+          <p class="name">
+            <a href="/download/<%=getFilePath(report.userReport) %>"
+              ><%= getFileName(report.userReport) %></a
+            >
+          </p>
+          <p class="comment"><%= report.userComment %></p>
+          <% } %>
+        </div>
+        <div class="admin-report">
+          <h5 class="mb-3 mt-5">Admin Review:</h5>
+          <% if(report.adminReport) { %>
+          <p class="date"><%= formatDate(report.updatedAt) %></p>
+          <p class="name">
+            <a href="/download/<%=getFilePath(report.userReport) %>"
+              ><%= getFileName(report.adminReport) %></a
+            >
+          </p>
+          <p class="comment"><%= report.adminComment %></p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layout/footer') %>

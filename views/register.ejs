@@ -1,0 +1,118 @@
+<%- include('layout/header') %>
+<div class="login gray loggedOut">
+  <div class="container text-center">
+    <div
+      class="login-wrapper row d-flex justify-content-center align-items-center"
+    >
+      <div class="col-4 form-wrapper">
+        <div class="title mb-3">
+          <h1><img src="images/logo.png" alt="COOPROF Logo" width="280" /></h1>
+        </div>
+        <div class="signup-link">
+          Already have an account? <a href="/">Login</a>
+        </div>
+        <form id="register" action="/register" method="post">
+          <div class="form-group mb-3">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInput"
+              placeholder="John Doe"
+              name="name"
+            />
+
+            <div id="nameAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="floatingInput"
+              placeholder="name@example.com"
+              name="email"
+            />
+
+            <div id="emailAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="phone">Phone Number (Optional)</label>
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInput"
+              placeholder="+1 234 567 8901"
+              name="phone"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+
+            <input
+              type="password"
+              class="form-control"
+              id="floatingPassword"
+              placeholder="Password"
+              name="password"
+            />
+
+            <div id="passwordAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">
+            Create Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const form = document.getElementById("register");
+  const emailErr = document.getElementById("emailAlert");
+  const passwordErr = document.getElementById("passwordAlert");
+  const nameErr = document.getElementById("nameAlert");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    //reset errors
+    emailErr.textContent = "";
+    passwordErr.textContent = "";
+    nameErr.textContent = "";
+
+    //get values
+    const name = form.name.value;
+    const email = form.email.value;
+    const phone = form.phone.value;
+    const password = form.password.value;
+    try {
+      const res = await fetch("/register", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailErr.textContent = data.errors.email;
+        passwordErr.textContent = data.errors.password;
+        nameErr.textContent = data.errors.name;
+      }
+      if (data.user) {
+        location.assign("/user/dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>
+<%- include('layout/footer') %>

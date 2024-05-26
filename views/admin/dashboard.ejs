@@ -1,0 +1,138 @@
+<%- include('../layout/header') %>
+<div id="portal">
+  <div class="container mt-5">
+    <div id="message" class="alert" role="alert"></div>
+    <div class="mb-3"><h4>Hey Admin <%= user.name %></h4></div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Recent File</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (var i = 0; i < users.length; i++) { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td>
+            <% if(latestReports.length > 0 && latestReports[i].userReport) { %>
+            <a href="/download/<%= getFilePath(latestReports[i].userReport) %>">
+              <%= getFileName(latestReports[i].userReport) %> <% } %></a
+            >
+          </td>
+          <td><%= users[i].name %></td>
+          <td><%= users[i].email %></td>
+          <td><%= users[i].phone %></td>
+          <td>
+            <a href="/admin/user/<%= users[i].id %>"
+              ><i class="fa-regular fa-eye"></i
+            ></a>
+            <span
+              class="link-danger delete-user"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-user-id="<%= users[i]._id %>"
+            >
+              <i class="fa-solid fa-trash"></i
+            ></span>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalTitle">Delete User</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are you sure you want to delete this user?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          id="confirmDelete"
+          class="btn btn-primary btn-danger"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const messageEl = document.getElementById("message");
+    const deleteBtns = document.querySelectorAll(".delete-user");
+    const confirmDeleteButton = document.getElementById("confirmDelete");
+    const message = document.getElementById("message");
+
+    // Get Delete Modal instance to use later
+    deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+    let userIdToDelete = null;
+
+    // Grab the clicked button id from report-id-delete attribute
+    deleteBtns.forEach((button) => {
+      button.addEventListener("click", function (e) {
+        userIdToDelete = this.getAttribute("data-user-id");
+      });
+    });
+
+    // Action after clicking Delete Button inside Modal
+    confirmDeleteButton.addEventListener("click", async () => {
+      if (userIdToDelete) {
+        try {
+          const res = await fetch(`/admin/user/delete/${userIdToDelete}`, {
+            method: "DELETE",
+          });
+          const data = await res.json();
+          if (res.ok) {
+            // Hide the modal
+            deleteModal.hide();
+            messageEl.classList.remove("alert-danger");
+            messageEl.classList.add("alert-success");
+            messageEl.textContent = data.message;
+            // Remove the row from the table
+            const reportRow = document
+              .querySelector(`[data-user-id="${userIdToDelete}"]`)
+              .closest("tr");
+            reportRow.remove();
+          } else {
+            deleteModal.hide();
+            messageEl.classList.remove("alert-success");
+            messageEl.classList.add("alert-danger");
+            messageEl.textContent = data.error;
+            console.error(data.error);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+  });
+</script>
+
+<%- include('../layout/footer') %>

@@ -1,0 +1,107 @@
+<%- include('layout/header') %>
+
+<div class="login gray loggedOut">
+  <div class="container text-center">
+    <div
+      class="login-wrapper row d-flex justify-content-center align-items-center"
+    >
+      <div class="col-4 form-wrapper">
+        <div class="title mb-3">
+          <h1><img src="images/logo.png" alt="COOPROF Logo" width="280" /></h1>
+        </div>
+        <div class="signup-link">
+          New to COOPROF? <a href="/register">Register here</a>
+        </div>
+        <form id="login" method="post" action="/">
+          <div class="form-group mb-3">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="floatingInput"
+              placeholder="name@example.com"
+              name="email"
+              autocomplete="username"
+            />
+            <div id="emailAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="floatingPassword"
+              placeholder="Password"
+              name="password"
+              autocomplete="current-password"
+            />
+            <div id="passwordAlert" class="error text-danger mt-2 mb-1"></div>
+          </div>
+          <div class="form-check">
+            <input
+              onclick="onCheckClick(this.value)"
+              class="form-check-input"
+              id="remember"
+              type="checkbox"
+              name="remember"
+              value="false"
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById("login");
+  const emailErr = document.getElementById("emailAlert");
+  const passwordErr = document.getElementById("passwordAlert");
+  const remember = document.getElementById("remember");
+  const onCheckClick = function (val) {
+    val == "false" ? (remember.value = "true") : (remember.value = "false");
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    //reset errors
+    emailErr.textContent = "";
+    passwordErr.textContent = "";
+
+    //get values
+    const email = form.email.value;
+    const password = form.password.value;
+    try {
+      const res = await fetch("/", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailErr.textContent = data.errors.email;
+        passwordErr.textContent = data.errors.password;
+      }
+      if (data.user) {
+        console.log(data.user);
+        location.assign("/admin/dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>
+
+<%- include('layout/footer') %>

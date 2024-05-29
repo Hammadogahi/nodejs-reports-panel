@@ -19,7 +19,7 @@ app.use(express.static("uploads"));
 //DATABASE CONNECTION
 
 mongoose
-  .connect(process.env.DATABASE_CELLULAR_URI)
+  .connect(process.env.DATABASE_URI)
   .then(() => {
     console.log("DB CONNECTED SUCCESSFULLY");
   })
@@ -52,6 +52,4 @@ app.use("", router);
 app.use("/admin", adminRoutes);
 app.use("/user", userRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running at port ${PORT}`);
-});
+app.listen();

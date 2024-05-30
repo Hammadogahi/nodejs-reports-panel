@@ -29,7 +29,7 @@ router.get("/dashboard", requireAuth, reportsController.getReports);
 
 // Handle Download Requests
 
-router.get("/download/:fileName", reportsController.getDownloads);
+router.get("/download/uploads/:fileName", reportsController.getDownloads);
 
 // Post add Report
 router.post(

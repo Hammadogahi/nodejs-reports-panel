@@ -1,7 +1,7 @@
 <%- include('../layout/header') %>
 <div id="portal">
-  <div class="container mt-5">
-    <div class="row mb-5">
+  <div class="container mt-5 user_report_ui">
+    <div class="row">
       <div class="col">
         <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
           <ol class="breadcrumb">
@@ -24,6 +24,7 @@
       <thead>
         <tr>
           <th>#</th>
+          <th>Date</th>
           <th>File</th>
           <th>Comment</th>
           <th>Admin Report</th>
@@ -35,6 +36,7 @@
         <% for (var i = 0; i < reports.length; i++) { %>
         <tr>
           <td><%= i + 1 %></td>
+          <td><%= formatDate(reports[i].createdAt) %></td>
           <td>
             <a
               href="/download/<%= getFilePath(reports[i].userReport) %>"

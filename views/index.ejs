@@ -12,9 +12,9 @@
         <div class="signup-link">
           New to COOPROF? <a href="/register">Register here</a>
         </div>
-        <form id="login" method="post" action="/">
+        <form id="login" method="post" action="/" class="user_login_form">
           <div class="form-group mb-3">
-            <label for="email">Email address</label>
+            <label for="email">Email address*</label>
             <input
               type="email"
               class="form-control"
@@ -26,7 +26,7 @@
             <div id="emailAlert" class="error text-danger mt-2 mb-1"></div>
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Password*</label>
             <input
               type="password"
               class="form-control"
@@ -51,7 +51,9 @@
               Remember me
             </label>
           </div>
+          <div class="user_login_sub">
           <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </div>
         </form>
       </div>
     </div>

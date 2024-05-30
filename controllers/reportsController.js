@@ -70,6 +70,7 @@ module.exports.getReports = async (req, res) => {
         reports,
         getFileName,
         getFilePath,
+        formatDate
       });
     }
   } catch (err) {
@@ -125,6 +126,7 @@ module.exports.getSingleReport = async (req, res) => {
         formatDate,
         getFileName,
         getFilePath,
+        formatDate,
         title: "View Report",
       });
     }

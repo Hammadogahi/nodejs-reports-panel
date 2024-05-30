@@ -19,7 +19,7 @@ app.use(express.static("uploads"));
 //DATABASE CONNECTION
 
 mongoose
-  .connect(process.env.DATABASE_CELLULAR_URI)
+  .connect(process.env.DATABASE_URI)
   .then(() => {
     console.log("DB CONNECTED SUCCESSFULLY");
   })

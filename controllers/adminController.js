@@ -1,10 +1,10 @@
 const User = require("../models/users");
 const Report = require("../models/reports");
-const { getFileName, getFilePath } = require("../helpers/reportsHelpers");
+const { getFileName, getFilePath, formatDate } = require("../helpers/reportsHelpers");
 
 module.exports.getDashboard = async (req, res) => {
   try {
-    const users = await User.find({ isAdmin: false });
+    const users = await User.find({ isAdmin: false }).sort({createdAt: -1});
     // Array to store the latest report for each user
     const latestReports = [];
     if (users) {
@@ -30,6 +30,7 @@ module.exports.getDashboard = async (req, res) => {
       latestReports,
       getFilePath,
       getFileName,
+      formatDate
     });
   } catch (err) {
     console.log(err);
@@ -53,6 +54,7 @@ module.exports.getUserReports = async (req, res) => {
         reports,
         getFilePath,
         getFileName,
+        formatDate,
         title: "User Reports",
       });
     } else {

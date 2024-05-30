@@ -13,16 +13,20 @@ const getFileName = (filePath) => {
 // Get File Path and strip uploads
 
 const getFilePath = (filePath) => {
-  filePath = filePath.replace("uploads\\", "");
+  filePath = filePath.replace("uploads//", "");
   return filePath;
 };
 
 const formatDate = (date) => {
-  return new Intl.DateTimeFormat("en-GB", {
+  return new Date(date).toLocaleString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-  }).format(new Date(date));
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "America/New_York", // EST time zone
+    hour12: true, // 12-hour format
+  });
 };
 
 module.exports = {

@@ -1,12 +1,13 @@
 <%- include('../layout/header') %>
 <div id="portal">
-  <div class="container mt-5">
+  <div class="container mt-5 user_table_ui">
     <div id="message" class="alert" role="alert"></div>
     <div class="mb-3"><h4>Hey Admin <%= user.name %></h4></div>
     <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th>#</th>
+          <th>Date</th>
           <th>Recent File</th>
           <th>Name</th>
           <th>Email</th>
@@ -18,6 +19,11 @@
         <% for (var i = 0; i < users.length; i++) { %>
         <tr>
           <td><%= i + 1 %></td>
+          <td>
+            <% if(latestReports.length > 0 && latestReports[i].userReport) { %>
+              <%= formatDate(latestReports[i].createdAt) %>
+            <% } %>
+          </td>
           <td>
             <% if(latestReports.length > 0 && latestReports[i].userReport) { %>
             <a href="/download/<%= getFilePath(latestReports[i].userReport) %>">

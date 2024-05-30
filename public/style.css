@@ -15,6 +15,9 @@ body {
   background: #fff;
   padding: 40px;
   border: 1px solid #e3e3e3;
+  -webkit-box-shadow: 0 0 18px 0 rgb(0 0 0 / 15%);
+  -moz-box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 18px 0 rgb(0 0 0 / 15%);
 }
 
 .nav-link {
@@ -26,6 +29,7 @@ button[type="submit"] {
   height: 56px;
   border-radius: 38px;
 }
+
 #register button[type="submit"],
 .login button[type="submit"] {
   background: var(--primary);
@@ -37,14 +41,16 @@ button[type="submit"] {
   box-shadow: 0 0 0 0.25rem rgba(64, 167, 152, 0.25);
 }
 
-#login > div {
+#login>div {
   text-align: left;
   margin-top: 15px;
 }
-#register > div {
+
+#register>div {
   text-align: left;
   margin-top: 15px;
 }
+
 label {
   font-size: 14px;
   font-weight: 500;
@@ -68,6 +74,7 @@ a {
 .form-control {
   padding: 0.75rem 0.725rem;
 }
+
 .form-check-label {
   font-size: 16px;
   font-weight: 400;
@@ -130,4 +137,206 @@ form {
 
 .link-danger {
   cursor: pointer;
+}
+
+
+
+/* arham new css */
+
+.user_login_form input {
+  border: 1px solid #ebebeb;
+  border-radius: 0px;
+  font-size: 15px;
+}
+
+.user_login_form label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user_login_sub button {
+  width: 35%;
+}
+
+.user_login_sub button:hover {
+  background: #59978e;
+  border-color: #59978e;
+  color: white;
+}
+
+.user_login_form {
+  margin-top: 10%;
+}
+
+.user_register_sub button {
+  width: 50%;
+}
+
+.user_register_sub button:hover {
+  background: #59978e;
+  border-color: #59978e;
+  color: white;
+}
+
+.user_register_sub {
+  margin-top: 10%;
+}
+
+.logout_click {
+  background: #40a798;
+  border-color: #40a798;
+  color: white;
+  border-radius: 5px;
+}
+
+.logout_click:hover {
+  background: #59978e;
+  border-color: #59978e;
+  color: white;
+}
+
+.user_table_ui table thead tr th {
+  background: #bdbdbd;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.user_table_ui table tbody tr td {
+  background: white;
+  border: 1px solid #d7d7d7;
+}
+
+.user_table_ui table tbody tr {
+  background: white;
+  border: 1px solid #d7d7d7;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.user_table_ui h4 {
+  font-size: 21px;
+  font-weight: 600;
+  background: black;
+  padding: 17px;
+  color: white;
+  width: 25%;
+  margin-bottom: 3%;
+  text-align: center;
+}
+
+.user_table_ui {
+  background: #ffffff00;
+  -webkit-box-shadow: 0 0 18px 0 rgb(0 0 0 / 15%);
+  -moz-box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 18px 0 rgb(0 0 0 / 15%);
+  padding: 0px 50px;
+  padding-bottom: 35px;
+}
+
+.user_report_ui {
+  background: #ffffff00;
+  -webkit-box-shadow: 0 0 18px 0 rgb(0 0 0 / 15%);
+  -moz-box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 18px 0 rgb(0 0 0 / 15%);
+  padding: 0px 50px;
+  padding-bottom: 35px;
+  padding-top: 50px;
+}
+
+.user_report_ui h5 {
+  font-size: 21px;
+  font-weight: 600;
+  background: black;
+  padding: 17px;
+  color: white;
+  width: 70%;
+  margin-bottom: 3%;
+  text-align: center;
+}
+
+
+.user_report_ui table thead tr th {
+  background: #bdbdbd;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.user_report_ui table tbody tr td {
+  background: white;
+  border: 1px solid #d7d7d7;
+}
+
+.user_report_ui table tbody tr {
+  background: white;
+  border: 1px solid #d7d7d7;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+
+@media only screen and (max-width : 768px) {}
+
+@media only screen and (max-width: 480px) {
+  .user_table_ui h4 {
+    font-size: 14px;
+    width: auto;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .table td {
+    display: block;
+    text-align: left;
+    font-size: 12px;
+    border-bottom: 1px solid #dee2e6;
+    position: relative;
+    padding-left: 2%;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .user_report_ui h5 {
+    font-size: 14px;
+    width: auto;
+  }
+
+  .loggedOut .form-wrapper {
+    width: 90%;
+  }
+
+  .user_register_sub button {
+    width: auto;
+  }
+
+  .user_register_sub {
+    text-align: center;
+  }
+
+  .user_view {
+    width: 90%;
+  }
+
+  .user_view_head {
+    width: 90%;
+  }
+
+  .edit_user_report .form-wrapper {
+    width: 90%;
+  }
 }

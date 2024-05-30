@@ -52,6 +52,6 @@ app.use("", router);
 app.use("/admin", adminRoutes);
 app.use("/user", userRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running at port ${PORT}`);
+app.listen( 5000, () => {
+  console.log('App is running at port 5000');
 });
